@@ -10,7 +10,7 @@
 |--|--|--|--|
 | *Houyez* | *Baptiste*| *hb160284* | *baptiste.houyez@etu.univ-lehavre.fr* |
 | *Lebrun* | *Solenne*| *ls150611* | *solenne.lebrun@etu.univ-lehavre.fr* |
-| *Caricand* | *Maxime*| *lm170343* | *maxime.caricand@etu.univ-lehavre.fr* |
+| *Caricand* | *Maxime*| *cm171529* | *maxime.caricand@etu.univ-lehavre.fr* |
 | *Kerné* | *Niels*| *kn175318* | *niels.kerne@etu.univ-lehavre.fr* |
 
 ## Travail à réaliser
