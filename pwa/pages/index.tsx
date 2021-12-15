@@ -1,6 +1,6 @@
 import Head from "next/head";
 import Link from "next/link";
-
+import PrixMetre2ParAnneeComponnent from "./PrixMetre2ParAnnee";
 const Welcome = () => (
   <>
     <Head>
