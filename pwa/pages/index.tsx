@@ -1,6 +1,7 @@
 import Head from "next/head";
 import Link from "next/link";
 import PrixMetre2ParAnneeComponnent from "./PrixMetre2ParAnnee";
+
 const Welcome = () => (
   <>
     <Head>
@@ -15,6 +16,7 @@ const Welcome = () => (
           <h1>
             Welcome to <strong>API Platform :3</strong>!
           </h1>
+            <PrixMetre2ParAnneeComponnent />
         </div>
       </section>
     </div>
