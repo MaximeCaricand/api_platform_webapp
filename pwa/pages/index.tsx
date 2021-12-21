@@ -1,23 +1,12 @@
-import Head from "next/head";
-import Link from "next/link";
-
-const Welcome = () => (
+const Index = () => (
   <>
-    <Head>
-      <title>Welcome to API Platform!</title>
-    </Head>
-
-    <div>
-      <header>
-      </header>
-      <section>
-        <div>
-          <h1>
-            Welcome to <strong>API Platform :3</strong>!
-          </h1>
+    <div className="container py-5 h-100">
+      <div className="row d-flex justify-content-center align-items-center h-100">
+        <div className="col-12 p-5 text-center">
+          <h2 className="fw-bold mb-5">LANDING PAGE DU TURFU</h2>
         </div>
-      </section>
+      </div>
     </div>
   </>
 );
-export default Welcome;
+export default Index;
