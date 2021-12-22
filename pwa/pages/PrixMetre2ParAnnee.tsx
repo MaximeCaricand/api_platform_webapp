@@ -11,12 +11,14 @@ export default function PrixMetre2ParAnneeComponnent() {
             const d3 = await import('d3');
             const width = window.screen.width / 2;
             const heigh = window.screen.height / 2;
+            const coordonneesBaseTransitionx = 50
+            const coordonneesBaseTransitiony = 10;
             const svg = d3.select('svg')
                 .attr("width", width)
                 .attr("height", heigh);
             var scale = d3.scaleLinear()
                 .domain([2017, 2019])
-                .range([100, width - 100]);
+                .range([0, width]);
             var x_axis = d3.axisBottom(scale)
                 .scale(scale)
                 .tickValues([2017, 2018, 2019]);
@@ -27,9 +29,10 @@ export default function PrixMetre2ParAnneeComponnent() {
                 .scale(scale)
                 .tickValues([2, 3, 4]);
             svg.append("g")
+                .attr("transform", "translate(" + coordonneesBaseTransitionx + ", " + (heigh/2 + coordonneesBaseTransitiony) + ")")
                 .call(x_axis);
             svg.append("g")
-                .attr("transform", "translate(50, 10)")
+                .attr("transform", "translate(" + coordonneesBaseTransitionx + ", " + coordonneesBaseTransitiony + ")")
                 .call(y_axis);
         };
         import_d3();
