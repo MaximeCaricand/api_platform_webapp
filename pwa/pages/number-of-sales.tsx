@@ -1,8 +1,3 @@
-import Header from "components/partials/Header";
-import Footer from "components/partials/Footer";
-import Head from "next/head";
-import Link from "next/link";
-
 const Index = () => (
     <>
         <div className="container py-5 h-100">
