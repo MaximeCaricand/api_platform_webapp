@@ -6,7 +6,11 @@ const fakeData = {0 : {"date" : "2017", "prixMoyenParMettreCarre": 2}, 1 : {"dat
 // dans le conteneur React
 export default function PrixMetre2ParAnneeComponnent() {
     useEffect(() => {
-
+        const import_d3 = async () => {
+            // import {LineChart} from "@d3/line-chart"
+            const d3 = await import('d3');
+        };
+        import_d3();
     }, [])
 
 //...
