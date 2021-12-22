@@ -23,6 +23,9 @@ export default function PrixMetre2ParAnneeComponnent() {
             var scale = d3.scaleLinear()
                 .domain([2, 4])
                 .range([heigh/2, 0]);
+            var y_axis = d3.axisLeft(scale)
+                .scale(scale)
+                .tickValues([2, 3, 4]);
             svg.append("g")
                 .call(x_axis);
         };
