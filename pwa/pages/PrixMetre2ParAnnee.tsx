@@ -11,6 +11,9 @@ export default function PrixMetre2ParAnneeComponnent() {
             const d3 = await import('d3');
             const width = window.screen.width / 2;
             const heigh = window.screen.height / 2;
+            const svg = d3.select('svg')
+                .attr("width", width)
+                .attr("height", heigh);
         };
         import_d3();
     }, [])
