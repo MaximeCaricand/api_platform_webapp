@@ -18,7 +18,7 @@ export default function PrixMetre2ParAnneeComponnent() {
                 .attr("height", heigh);
             var scale = d3.scaleLinear()
                 .domain([2017, 2019])
-                .range([0, width]);
+                .range([0, width * 3/4]);
             var x_axis = d3.axisBottom(scale)
                 .scale(scale)
                 .tickValues([2017, 2018, 2019]);
