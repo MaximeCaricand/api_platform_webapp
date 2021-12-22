@@ -17,6 +17,9 @@ export default function PrixMetre2ParAnneeComponnent() {
             var scale = d3.scaleLinear()
                 .domain([2017, 2019])
                 .range([0, window.screen.width - 100]);
+            var x_axis = d3.axisBottom(scale)
+                .scale(scale)
+                .tickValues([2017, 2018, 2019]);
         };
         import_d3();
     }, [])
