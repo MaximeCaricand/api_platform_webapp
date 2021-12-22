@@ -28,6 +28,9 @@ export default function PrixMetre2ParAnneeComponnent() {
                 .tickValues([2, 3, 4]);
             svg.append("g")
                 .call(x_axis);
+            svg.append("g")
+                .attr("transform", "translate(50, 10)")
+                .call(y_axis);
         };
         import_d3();
     }, [])
