@@ -9,6 +9,8 @@ export default function PrixMetre2ParAnneeComponnent() {
         const import_d3 = async () => {
             // import {LineChart} from "@d3/line-chart"
             const d3 = await import('d3');
+            const width = window.screen.width / 2;
+            const heigh = window.screen.height / 2;
         };
         import_d3();
     }, [])
