@@ -33,16 +33,15 @@ const donut_chart = ({ donut_data }) => (
 const Donut_chart = ({ donut_data }) => {
 
   const ref = useRef()
-  const width = 700
-  const height = 700
+  const width = 1000
+  const height = 1000
 
   var format_data = {}
-  donut_data["hydra:member"].map((sale) => {
-    let distribution = Math.round(Number(sale.distribution))
-    if(distribution > 0)
-      format_data[sale.region] = Math.round(Number(sale.distribution))
+  donut_data["hydra:member"].map((sale) =>{
+    format_data[sale.region] = sale.distribution
+    console.log(sale.region)
   })
-
+  console.log("format_data " + JSON.stringify(format_data));
   useEffect(() => {
     async function fetchD3() {
 
@@ -63,6 +62,7 @@ const Donut_chart = ({ donut_data }) => {
         .append("g")
         .attr("transform", `translate(${width / 2},${height / 2})`);
 
+      // Create dummy data
       const data = format_data
 
       // set the color scale
@@ -94,7 +94,7 @@ const Donut_chart = ({ donut_data }) => {
         .attr('d', arc)
         .attr('fill', d => color(d.data[1]))
         .attr("stroke", "white")
-        .style("stroke-width", "1px")
+        .style("stroke-width", "2px")
         .style("opacity", 0.7)
 
       // Add the polylines between chart and labels:
@@ -110,9 +110,8 @@ const Donut_chart = ({ donut_data }) => {
           const posB = outerArc.centroid(d) // line break: we use the other arc generator that has been built only for that
           const posC = outerArc.centroid(d); // Label position = almost the same as posB
           const midangle = d.startAngle + (d.endAngle - d.startAngle) / 2 // we need the angle to see if the X position will be at the extreme right or extreme left
-          var pos = outerArc.centroid(d);
-          pos[0] = radius * 0.95 * (midAngle(d) < Math.PI ? 1 : -1);
-          return [arc.centroid(d), outerArc.centroid(d), pos]
+          posC[0] = radius * 0.95 * (midangle < Math.PI ? 1 : -1); // multiply by 1 or -1 to put it on the right or on the left
+          return [posA, posB, posC]
         })
 
       // Add the polylines between chart and labels:
@@ -131,18 +130,6 @@ const Donut_chart = ({ donut_data }) => {
           const midangle = d.startAngle + (d.endAngle - d.startAngle) / 2
           return (midangle < Math.PI ? 'start' : 'end')
         })
-      function midAngle(d) { return d.startAngle + (d.endAngle - d.startAngle) / 2; }
-
-      // Now add the annotation. Use the centroid method to get the best coordinates
-      svg
-        .selectAll('mySlices')
-        .data(data_ready)
-        .join('text')
-        .text(function (d) { return d.data[1] + " %" })
-        .attr("transform", function (d) { return `translate(${arc.centroid(d)})` })
-        .style("text-anchor", "middle")
-        .style("font-size", 17)
-
     }
     fetchD3()
   }, [])
@@ -153,10 +140,6 @@ const Donut_chart = ({ donut_data }) => {
       <Head>
         <title>FullStack Lab</title>
       </Head>
-
-      <style>
-
-      </style>
 
       <div>
         <header>
