@@ -28,6 +28,7 @@ class LandValueRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('l')
             ->select('AVG(l.priceSurface) AS avgPrice, DATE_FORMAT(l.saleDate, \'YYYY-MM\') AS Date  ')
             ->groupBy('Date')
+            ->orderBy('Date')
             ->getQuery()
             ->getResult()
         ;
