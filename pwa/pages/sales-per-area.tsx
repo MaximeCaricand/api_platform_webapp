@@ -2,44 +2,19 @@ import d3, { svg } from "d3";
 import Head from "next/head";
 import { FunctionComponent, useState, useEffect, useRef } from "react";
 
-const donut_chart = ({ donut_data }) => (
-
-  <>
-    <Head>
-      <title>FullStack Lab</title>
-    </Head>
-
-    <div>
-      <header>
-      </header>
-      <section>
-        <div>
-          <h1>
-            <strong>Sale distribution per region</strong>
-          </h1>
-        </div>
-      </section>
-    </div>
-
-    <ul>
-      {donut_data["hydra:member"].map((obj) => (
-        <li>{obj.region + " " + obj.distribution}</li>
-      ))}
-    </ul>
-
-  </>
-);
 
 const Donut_chart = ({ donut_data }) => {
 
   const ref = useRef()
-  const width = 700
-  const height = 700
+  const width = 900
+  const height = 900
 
   var format_data = {}
+  console.log(JSON.stringify(donut_data))
   donut_data["hydra:member"].map((sale) => {
+    console.log(JSON.stringify(sale))
     let distribution = Math.round(Number(sale.distribution))
-    if(distribution > 0)
+    if (distribution > 0)
       format_data[sale.region] = Math.round(Number(sale.distribution))
   })
 
@@ -50,7 +25,7 @@ const Donut_chart = ({ donut_data }) => {
 
       // set the dimensions and margins of the graph
 
-      const margin = 40;
+      const margin = 200;
 
       // The radius of the pieplot is half the width or half the height (smallest one). I subtract a bit of margin.
       const radius = Math.min(width, height) / 2 - margin
@@ -67,7 +42,7 @@ const Donut_chart = ({ donut_data }) => {
 
       // set the color scale
       const color = d3.scaleOrdinal()
-        .domain(Object.keys(data))
+        .domain([Object.keys(data)])
         .range(d3.schemeDark2);
 
       // Compute the position of each group on the pie:
@@ -81,8 +56,15 @@ const Donut_chart = ({ donut_data }) => {
         .innerRadius(radius * 0.5)         // This is the size of the donut hole
         .outerRadius(radius * 0.8)
 
+
+
+
+
       // Another arc that won't be drawn. Just for labels positioning
       const outerArc = d3.arc()
+        .innerRadius(radius * 0.8)
+        .outerRadius(radius * 0.8)
+      const outerArc2 = d3.arc()
         .innerRadius(radius * 0.9)
         .outerRadius(radius * 0.9)
 
@@ -94,54 +76,55 @@ const Donut_chart = ({ donut_data }) => {
         .attr('d', arc)
         .attr('fill', d => color(d.data[1]))
         .attr("stroke", "white")
-        .style("stroke-width", "1px")
+        .style("stroke-width", "2px")
         .style("opacity", 0.7)
 
       // Add the polylines between chart and labels:
       svg
         .selectAll('allPolylines')
         .data(data_ready)
-        .join('polyline')
+        .enter()
+        .append('polyline')
         .attr("stroke", "black")
         .style("fill", "none")
         .attr("stroke-width", 1)
         .attr('points', function (d) {
-          const posA = arc.centroid(d) // line insertion in the slice
-          const posB = outerArc.centroid(d) // line break: we use the other arc generator that has been built only for that
-          const posC = outerArc.centroid(d); // Label position = almost the same as posB
-          const midangle = d.startAngle + (d.endAngle - d.startAngle) / 2 // we need the angle to see if the X position will be at the extreme right or extreme left
-          var pos = outerArc.centroid(d);
-          pos[0] = radius * 0.95 * (midAngle(d) < Math.PI ? 1 : -1);
-          return [arc.centroid(d), outerArc.centroid(d), pos]
+          var posA = outerArc.centroid(d) // line insertion in the slice
+          var posB = outerArc2.centroid(d) // line break: we use the other arc generator that has been built only for that
+          var posC = outerArc2.centroid(d); // Label position = almost the same as posB
+          var midangle = d.startAngle + (d.endAngle - d.startAngle) / 2 // we need the angle to see if the X position will be at the extreme right or extreme left
+          posC[0] = radius * 0.90 * (midangle < Math.PI ? 1 : -1); // multiply by 1 or -1 to put it on the right or on the left
+          return [posA, posB, posC]
         })
 
-      // Add the polylines between chart and labels:
+
+      // Add labels:
       svg
         .selectAll('allLabels')
         .data(data_ready)
         .join('text')
         .text(d => d.data[0])
         .attr('transform', function (d) {
-          const pos = outerArc.centroid(d);
+          const pos = outerArc2.centroid(d);
           const midangle = d.startAngle + (d.endAngle - d.startAngle) / 2
-          pos[0] = radius * 0.99 * (midangle < Math.PI ? 1 : -1);
+          pos[0] = radius * 0.95 * (midangle < Math.PI ? 1 : -1);
           return `translate(${pos})`;
         })
         .style('text-anchor', function (d) {
           const midangle = d.startAngle + (d.endAngle - d.startAngle) / 2
           return (midangle < Math.PI ? 'start' : 'end')
         })
-      function midAngle(d) { return d.startAngle + (d.endAngle - d.startAngle) / 2; }
+        .style("font-size", 12)
 
-      // Now add the annotation. Use the centroid method to get the best coordinates
+      // Creating annotations of sale distribution on the chart
       svg
-        .selectAll('mySlices')
+        .selectAll('allSlices')
         .data(data_ready)
         .join('text')
         .text(function (d) { return d.data[1] + " %" })
         .attr("transform", function (d) { return `translate(${arc.centroid(d)})` })
         .style("text-anchor", "middle")
-        .style("font-size", 17)
+        .style("font-size", 12)
 
     }
     fetchD3()
@@ -169,14 +152,12 @@ const Donut_chart = ({ donut_data }) => {
           </div>
         </section>
       </div>
-      <div className="container">
-        <div className="row">
-          <div className="col text-center">
-            <svg width={width.toString()} height={height.toString()}
-              ref={ref}
-            />
-          </div>
-        </div>
+      <div className="container text-center">
+
+        <svg width={width.toString()} height={height.toString()}
+          ref={ref}
+        />
+
       </div>
     </>
   )
