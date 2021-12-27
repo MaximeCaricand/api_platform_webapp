@@ -36,8 +36,8 @@ const Donut_chart = ({ donut_data }) => {
         .attr("width", width)
         .attr("height", height)
         .append("g")
-        .attr("transform", `translate(${width / 2},${height / 2})`);
-
+        .attr("transform", `translate(${width / 2},${height / 2})`)
+        
       const data = format_data
 
       // set the color scale
@@ -53,20 +53,20 @@ const Donut_chart = ({ donut_data }) => {
 
       // The arc generator
       const arc = d3.arc()
-        .innerRadius(radius * 0.5)         // This is the size of the donut hole
-        .outerRadius(radius * 0.8)
+        .innerRadius(radius * 0.55)         // This is the size of the donut hole
+        .outerRadius(radius * 0.7)
 
 
 
 
 
-      // Another arc that won't be drawn. Just for labels positioning
+      // Arcs that won't be drawn. Just for labels positioning
       const outerArc = d3.arc()
+        .innerRadius(radius * 0.7)
+        .outerRadius(radius * 0.7)
+      const outerArc2 = d3.arc()
         .innerRadius(radius * 0.8)
         .outerRadius(radius * 0.8)
-      const outerArc2 = d3.arc()
-        .innerRadius(radius * 0.9)
-        .outerRadius(radius * 0.9)
 
       // Build the pie chart: Basically, each part of the pie is a path that we build using the arc function.
       svg
@@ -87,7 +87,8 @@ const Donut_chart = ({ donut_data }) => {
         .append('polyline')
         .attr("stroke", "black")
         .style("fill", "none")
-        .attr("stroke-width", 1)
+        .style("opacity", 0.3)
+        .attr("stroke-width", 2)
         .attr('points', function (d) {
           var posA = outerArc.centroid(d) // line insertion in the slice
           var posB = outerArc2.centroid(d) // line break: we use the other arc generator that has been built only for that
