@@ -2,6 +2,7 @@
 
 use App\Entity\LandValue;
 use App\utils\DataManager;
+use App\utils\RegionName;
 use Doctrine\Persistence\ObjectManager;
 
 function saveLandValueFromFile(string $file, ObjectManager $manager){
@@ -25,7 +26,7 @@ function saveLandValueFromFile(string $file, ObjectManager $manager){
             $data[38] = str_replace(',', '.', $data[38]);
             $landValue = new LandValue();
             $landValue->setPriceSurface((float)$data[10] / (float)$data[38]);
-            $landValue->setRegion(getRegionName($data[18]));
+            $landValue->setRegion(RegionName::getRegionName($data[18]));
             $landValue->setSaleDate($date);
             $manager->persist($landValue);
             if (intval(($i*100)/$nbT) == $pourcent+2){

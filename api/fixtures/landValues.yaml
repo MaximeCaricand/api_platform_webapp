@@ -1,0 +1,5 @@
+App\Entity\LandValue:
+  landValues_{1..100}:
+    saleDate: <saleDate()>
+    region: <region()>
+    priceSurface: <numberBetween(400, 1200)>
