@@ -19,10 +19,6 @@ class LandValueRepository extends ServiceEntityRepository
         parent::__construct($registry, LandValue::class);
     }
 
-    // /**
-    //  * @return LandValue[] Returns an array of LandValue objects
-    //  */
-
     public function priceSurfaceByMonth(){
 
         return $this->createQueryBuilder('l')
