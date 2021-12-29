@@ -1,13 +1,31 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import styles from './BarChart.module.css';
 
-export default function BarChart(props: { data: Array<IBarChartData> }) {
+export default function BarChart(props: { offset: string, startDate: string, endDate: string }) {
+    const [loading, setLoading] = useState(true);
     const svgRef = useRef(null)
+    console.log("HEEERERERE");
+
     useEffect(() => {
         (async () => {
-            const d3 = await import('d3') // asynchronically import d3 
+            setLoading(true);
+            // asynchronically import d3 
+            const d3 = await import('d3');
+            // Fetch data
+            const data: Array<IBarChartData> = await (async () => {
+                process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = '0'
+                const res = await fetch(`https://localhost/land_values/nbSaleBy/${props.offset}/${props.startDate}/${props.endDate}`);
+                if (res.status === 200) {
+                    const data = await res.json();
+                    if (data) {
+                        setLoading(false);
+                        return data['hydra:member'];
+                    }
+                }
+            })();
 
             const margin = { top: 20, right: 20, bottom: 90, left: 80 };
-            const width = 1000 - margin.left - margin.right;
+            const width = 1200 - margin.left - margin.right;
             const height = 400 - margin.top - margin.bottom;
 
             const x = d3.scaleBand().range([0, width]).padding(0.2);
@@ -25,8 +43,8 @@ export default function BarChart(props: { data: Array<IBarChartData> }) {
                 .attr("class", "tooltip")
                 .style("opacity", 0);
 
-            x.domain(props.data.map(d => d.Date));
-            y.domain([0, d3.max(props.data, d => d.nb)]);
+            x.domain(data.map(d => d.Date));
+            y.domain([0, d3.max(data, d => d.nb)]);
 
             svgEl.append("g")
                 .attr("transform", "translate(0," + height + ")")
@@ -41,7 +59,7 @@ export default function BarChart(props: { data: Array<IBarChartData> }) {
                 .call(d3.axisLeft(y).ticks(6));
 
             svgEl.selectAll(".bar")
-                .data(props.data)
+                .data(data)
                 .enter().append("rect")
                 .attr("class", "bar")
                 .attr("x", d => x(d.Date))
@@ -66,9 +84,14 @@ export default function BarChart(props: { data: Array<IBarChartData> }) {
                         .style("opacity", 0);
                 });
         })();
-    }, []);
+    }, [props]);
 
-    return (<svg ref={svgRef} />);
+    return (
+        <>
+            {loading && <div className={styles['lds-ring']}><div></div><div></div><div></div><div></div></div>}
+            {!loading && <svg ref={svgRef} />}
+        </>
+    );
 }
 
 export interface IBarChartData {
