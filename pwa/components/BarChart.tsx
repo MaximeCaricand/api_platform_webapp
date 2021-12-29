@@ -4,7 +4,6 @@ import styles from './BarChart.module.css';
 export default function BarChart(props: { offset: string, startDate: string, endDate: string }) {
     const [loading, setLoading] = useState(true);
     const svgRef = useRef(null)
-    console.log("HEEERERERE");
 
     useEffect(() => {
         (async () => {
@@ -24,7 +23,7 @@ export default function BarChart(props: { offset: string, startDate: string, end
                 }
             })();
 
-            const margin = { top: 20, right: 20, bottom: 90, left: 80 };
+            const margin = { top: 30, right: 20, bottom: 90, left: 80 };
             const width = 1200 - margin.left - margin.right;
             const height = 400 - margin.top - margin.bottom;
 
@@ -39,7 +38,7 @@ export default function BarChart(props: { offset: string, startDate: string, end
                 .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
                 .style("fill", '#CA2D0B');
 
-            const div = d3.select("body").append("div")
+            const tooltip = d3.select("body").append("div")
                 .attr("class", "tooltip")
                 .style("opacity", 0);
 
@@ -56,7 +55,27 @@ export default function BarChart(props: { offset: string, startDate: string, end
                 .attr("transform", "rotate(-65)");
 
             svgEl.append("g")
-                .call(d3.axisLeft(y).ticks(6));
+                .call(d3.axisLeft(y).ticks(6))
+                .append("text")
+                .attr("fill", "#000")
+                .attr("transform", "rotate(90)")
+                .attr("y", 6)
+                .attr("dy", "-0.8em")
+                .style("text-anchor", "start")
+                .style("font-weight", "bold")
+                .text("Nombre de ventes");
+
+            const tooltipDate = (date: string): string => {
+                const params: Intl.DateTimeFormatOptions = { year: 'numeric' };
+                if (props.offset !== offsetValue.Year) {
+                    params.month = 'short';
+                    if (props.offset !== offsetValue.Month) {
+                        params.day = 'numeric';
+                    }
+                }
+                return new Date(date).toLocaleString('fr-FR', params);
+            };
+            const tooltipNb = (nb: number): string => nb.toLocaleString('fr');
 
             svgEl.selectAll(".bar")
                 .data(data)
@@ -67,21 +86,17 @@ export default function BarChart(props: { offset: string, startDate: string, end
                 .attr("y", d => y(d.nb))
                 .attr("height", d => height - y(d.nb))
                 .on("mouseover", (event, d) => {
-                    div.transition()
-                        .duration(200)
-                        .style("opacity", .9)
+                    tooltip.style("opacity", .9)
                         .style("border-radius", '5px')
                         .style("padding", '4px')
                         .style("color", 'white')
                         .style("background-color", 'black');
-                    div.html("Nombre de vente : " + d.nb.toLocaleString('fr'))
+                    tooltip.html(`${tooltipDate(d.Date)}<br>Nombre de vente : <strong>${tooltipNb(d.nb)}</strong>`)
                         .style("left", (event.pageX + 10) + "px")
                         .style("top", (event.pageY - 50) + "px");
                 })
                 .on("mouseout", (event, d) => {
-                    div.transition()
-                        .duration(250)
-                        .style("opacity", 0);
+                    tooltip.style("opacity", 0);
                 });
         })();
     }, [props]);
@@ -97,4 +112,10 @@ export default function BarChart(props: { offset: string, startDate: string, end
 export interface IBarChartData {
     nb: number;
     Date: string;
+}
+
+export enum offsetValue {
+    Year = 'year',
+    Month = 'month',
+    Day = 'day'
 }
