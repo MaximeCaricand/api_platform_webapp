@@ -12,7 +12,7 @@ export default function PrixMetre2ParAnneeComponnent() {
             const width = window.screen.width / 2;
             const heigh = window.screen.height / 2;
             const coordonneesBaseTransitionx = 50
-            const coordonneesBaseTransitiony = 10;
+            const coordonneesBaseTransitiony = 50;
             const svg = d3.select('svg')
                 .attr("width", width)
                 .attr("height", heigh);
@@ -63,13 +63,15 @@ export default function PrixMetre2ParAnneeComponnent() {
                 .attr("stroke-opacity", 0.5)
                 .attr("d", line(I))
                 .attr("transform", "translate(" + coordonneesBaseTransitionx + ", 0)");
-            /*  console.log(X_annee);
-              console.log(Y_prixMoyen);
-              const I = d3.range(nombreDanneesTraite);*/
-
-
-            /* const defined = (d, i) => !isNaN(X_annee[i]) && !isNaN(Y_prixMoyen[i]);
-             const D = d3.map(fakeData, defined);*/
+            svg.append("text")
+                .attr("x", (width / 2))
+                .attr("y", (coordonneesBaseTransitiony / 2))
+                .attr("text-anchor", "middle")
+                .style("fill", "#5a5a5a")
+                .style("font-family", "Raleway")
+                .style("font-weight", "300")
+                .style("font-size", "24px")
+                .text("Prix Moyen du M²");
             creationAxis(d3, svg, heigh, coordonneesBaseTransitionx, coordonneesBaseTransitiony, xScale, yScale, data);
         };
         import_d3();
