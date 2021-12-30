@@ -15,34 +15,20 @@ const salesPerArea = () => {
 
   return (
     <>
-      <Head>
-        <title>FullStack Lab</title>
-      </Head>
-
-      <div>
-        <header>
-        </header>
-        <section>
-          <div>
-            <h1>
-              <strong>Distribution des ventes par région en {year}</strong>
-            </h1>
-          </div>
-        </section>
-      </div>
-      <div className="container">
-        <div className="mb-3 row justify-content-md-center mt-5 mb-0">
-          <label className="col-sm-2 col-form-label">Sélectionner année</label>
-          <div className="col-sm-2">
-            <select id="year_selector" className="form-select" onChange={(e) => setYear(e.target.value)}>
-              {years.map((y) => (
-                <option key={years.indexOf(y)} value={y}>{y}</option>
-              ))}
-            </select>
-          </div>
-        </div>
+      <div className={`container h-100 number-of-sales `}>
         <div className="row d-flex justify-content-center align-items-center h-100">
-          <div className="col-12 text-center">
+          <div className="col-12 p-5 text-center">
+            <h2 className="fw-bold mb-4">Distribution des ventes par région en {year}</h2>
+            <div className="row justify-content-md-center mb-0">
+              <label className="col-sm-2 col-form-label">Sélectionner année</label>
+              <div className="col-sm-2">
+                <select id="year_selector" className="form-select" onChange={(e) => setYear(e.target.value)}>
+                  {years.map((y) => (
+                    <option key={years.indexOf(y)} value={y}>{y}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
             <DonutChart selectedYear={year}></DonutChart>
           </div>
         </div>
