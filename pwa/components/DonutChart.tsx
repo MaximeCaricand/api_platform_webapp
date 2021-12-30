@@ -1,5 +1,4 @@
 import { useEffect, useState, useRef } from "react";
-import { ENTRYPOINT } from "config/entrypoint";
 import styles from './DonutChart.module.css';
 
 
@@ -20,9 +19,7 @@ export default function DonutChart({ selectedYear }) {
             var api_data = await (async () => {
                 setLoading(true);
                 process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = '0'
-                let url = ENTRYPOINT + `/land_values/distributionRegion/${selectedYear}`;
-
-                const res = await fetch(url);
+                const res = await fetch(`https://localhost/land_values/distributionRegion/${selectedYear}`);
                 const data = await res.json()
                 setLoading(false)
 
@@ -147,7 +144,7 @@ export default function DonutChart({ selectedYear }) {
         return <h3>Données introuvables</h3>
     return (
         <>
-            {loading && 
+            {loading &&
                 <div className={styles['lds-ring']}><div></div><div></div><div></div><div></div></div>
             }
             {!loading && <svg id="donut_chart" width={width.toString()} height={height.toString()} ref={ref} />}
