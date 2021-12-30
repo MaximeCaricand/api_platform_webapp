@@ -89,7 +89,8 @@ export default function BarChart(props: { offset: string, startDate: string, end
                 .attr("width", x.bandwidth())
                 .attr("y", d => y(d.nb))
                 .attr("height", d => height - y(d.nb))
-                .on("mouseover", (event, d) => {
+                .on("mouseover", function (event, d) {
+                    d3.select(this).attr("r", 10).style("fill", "#ff6c4d");
                     tooltip.style("opacity", .9)
                         .style("border-radius", '5px')
                         .style("padding", '4px')
@@ -99,7 +100,8 @@ export default function BarChart(props: { offset: string, startDate: string, end
                         .style("left", (event.pageX + 10) + "px")
                         .style("top", (event.pageY - 50) + "px");
                 })
-                .on("mouseout", (event, d) => {
+                .on("mouseout", function (event, d) {
+                    d3.select(this).attr("r", 10).style("fill", "#CA2D0B");
                     tooltip.style("opacity", 0);
                 });
         })();
