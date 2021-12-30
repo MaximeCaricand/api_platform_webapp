@@ -11,7 +11,7 @@ export default function PrixMetre2ParAnneeComponnent() {
             const d3 = await import('d3');
             const width = window.screen.width / 2;
             const heigh = window.screen.height / 2;
-            const coordonneesBaseTransitionx = 50
+            const coordonneesBaseTransitionx = 80
             const coordonneesBaseTransitiony = 50;
             const svg = d3.select('svg')
                 .attr("width", width)
@@ -72,6 +72,16 @@ export default function PrixMetre2ParAnneeComponnent() {
                 .style("font-weight", "300")
                 .style("font-size", "24px")
                 .text("Prix Moyen du M²");
+
+            svg.append("text")
+                .attr("x", coordonneesBaseTransitionx / 4)
+                .attr("y", (heigh - coordonneesBaseTransitiony) / 2)
+                .attr("text-anchor", "middle")
+                .style("fill", "#5a5a5a")
+                .style("font-family", "Raleway")
+                .style("font-weight", "300")
+                .style("font-size", "24px")
+                .text("K€");
             creationAxis(d3, svg, heigh, coordonneesBaseTransitionx, coordonneesBaseTransitiony, xScale, yScale, data);
         };
         import_d3();
