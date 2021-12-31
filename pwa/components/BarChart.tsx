@@ -14,17 +14,8 @@ export default function BarChart(props: { offset: string, startDate: string, end
             // asynchronically import d3 
             const d3 = await import('d3');
             // Fetch data
-            const data: Array<IBarChartData> = await (async () => {
-                process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = '0'
-                const res = await fetch(`https://localhost/land_values/nbSaleBy/${props.offset}/${props.startDate}/${props.endDate}`);
-                if (res.status === 200) {
-                    const data = await res.json();
-                    if (data) {
-                        setLoading(false);
-                        return data['hydra:member'];
-                    }
-                }
-            })();
+            const data: Array<IBarChartData> = await fetchData(props.offset, props.startDate, props.endDate);
+            setLoading(false);
 
             const margin = { top: 30, right: 20, bottom: 90, left: 80 };
             const width = 1200 - margin.left - margin.right;
@@ -113,6 +104,17 @@ export default function BarChart(props: { offset: string, startDate: string, end
             {!loading && <svg ref={svgRef} />}
         </>
     );
+}
+
+export async function fetchData(offset: string, startDate: string, endDate: string): Promise<Array<IBarChartData>> {
+    process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = '0'
+    const res = await fetch(`https://localhost/land_values/nbSaleBy/${offset}/${startDate}/${endDate}`);
+    if (res.status === 200) {
+        const data = await res.json();
+        if (data) {
+            return data['hydra:member'];
+        }
+    }
 }
 
 export interface IBarChartData {
