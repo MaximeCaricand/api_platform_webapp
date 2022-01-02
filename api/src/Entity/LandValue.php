@@ -36,7 +36,7 @@ use Doctrine\ORM\Mapping as ORM;
     ]
 )]
 
-#[ApiFilter(DateFilter::class, properties: ['saleDate'])]
+
 class LandValue
 {
     #[ORM\Id]

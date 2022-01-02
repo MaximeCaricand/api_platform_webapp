@@ -6,12 +6,15 @@ use ApiPlatform\Core\Bridge\Symfony\Bundle\Test\ApiTestCase;
 use App\Entity\LandValue;
 use Hautelook\AliceBundle\PhpUnit\RefreshDatabaseTrait;
 
-class LandValuesTest extends ApiTestCase
-{
+/**
+ * Classe pour tester l'operation pour récupérer toutes les donnees de toutes les ventes
+ */
+
+class LandValuesTest extends ApiTestCase{
+
     use RefreshDatabaseTrait;
 
-    public function testGetCollection()
-    {
+    public function testGetCollection(){
         $response = static::createClient()->request('GET', '/land_values');
 
         $this->assertResponseIsSuccessful();
@@ -36,4 +39,5 @@ class LandValuesTest extends ApiTestCase
 
         $this->assertMatchesResourceCollectionJsonSchema(LandValue::class);
     }
+
 }
