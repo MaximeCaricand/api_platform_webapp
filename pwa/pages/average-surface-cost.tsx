@@ -1,6 +1,7 @@
 import BarChart, { offsetValue } from "components/BarChart";
 import LineChart, { ILineChartData } from "components/LineChart";
 import React, { useState } from "react";
+import {ENTRYPOINT} from "../config/entrypoint";
 
 export default function Index(props: { data: Array<ILineChartData> }) {
     return (
@@ -19,7 +20,7 @@ export default function Index(props: { data: Array<ILineChartData> }) {
 
 export async function getStaticProps(context): Promise<{ props: { data: Array<ILineChartData> } } | { notFound: boolean }> {
     process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = '0'
-    const res = await fetch(`https://localhost/land_values/priceAvg`);
+    const res = await fetch(ENTRYPOINT+`/land_values/priceAvg`);
     if (res.status === 200) {
         const data = await res.json();
         return data ? { props: { data: data['hydra:member'] } } : { notFound: true }
