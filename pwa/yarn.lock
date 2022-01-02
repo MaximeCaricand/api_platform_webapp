@@ -2604,7 +2604,11 @@
   "resolved" "https://registry.npmjs.org/decamelize/-/decamelize-4.0.0.tgz"
   "version" "4.0.0"
 
+<<<<<<< HEAD
 "decimal.js@^10.2.1", "decimal.js@^10.3.1":
+=======
+"decimal.js@^10.2.1":
+>>>>>>> d5db442c4b74660f9f4ff0ec2372f8cb1ee0f91b
   "integrity" "sha512-V0pfhfr8suzyPGOx3nmq4aHqabehUZn6Ch9kyFpV79TGDTWFmHqUqXdabR7QHqxzrYolF4+tVmJhUG4OURg5dQ=="
   "resolved" "https://registry.npmjs.org/decimal.js/-/decimal.js-10.3.1.tgz"
   "version" "10.3.1"
